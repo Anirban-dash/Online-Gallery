@@ -1,7 +1,18 @@
+<?php
+require("conn.php");
+session_start();
+if(!isset($_SESSION['id'])){
+	header("location:login.php");
+	die();
+}
+$id=$_SESSION['id'];
+$res=mysqli_query($con,"SELECT * from image where user='$id'") or die(mysqli_error($con));
+
+?>
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
-	<title>Boto | Photography HTML Template</title>
+	<title>Mmories</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="Boto Photo Studio HTML Template">
 	<meta name="keywords" content="photo, html">
@@ -75,7 +86,7 @@
 					</div>
 				</div>
 				<div class="col-sm-4 col-md-6 order-1  order-md-2 text-center">
-					<a href="./index.html" class="site-logo">
+					<a href="./index.php" class="site-logo">
 						<h2>Photo memories</h2>
 					</a>
 				</div>
@@ -88,10 +99,10 @@
 			</div>
 			<nav class="main__menu">
 				<ul class="nav__menu">
-					<li><a href="./index.html">Home</a></li>
-					<li><a href="./about.html">About</a></li>
-					<li><a href="./gallery.html">Gallery</a></li>
-					<li><a href="./contact.html">Feedback</a></li>
+					<li><a href="./index.php">Home</a></li>
+					<li><a href="./about.php">About</a></li>
+					<li><a href="./gallery.php" class="menu--active">Gallery</a></li>
+					<li><a href="./contact.php">Feedback</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -102,16 +113,24 @@
 	<div class="gallery__page">
 		<div class="gallery__warp">
 			<div class="row">
-				<div class="col-lg-3 col-md-4 col-sm-6">
-					<a class="gallery__item fresco" href="img/gallery/1.jpg" data-fresco-group="gallery">
-						<img src="img/gallery/1.jpg" alt="">
+				<?php
+				if(mysqli_num_rows($res)==0){
+					echo '<p class="text-center">You does not have any photo in your Gallery</p>';
+				}
+				while($row=mysqli_fetch_array($res)){
+					echo '<div class="col-lg-3 col-md-4 col-sm-6">
+					<a class="gallery__item fresco" href="img/'.$row['file'].'" data-fresco-group="gallery">
+						<img src="img/'.$row['file'].'" alt="">
 						
 					</a>
-					<div class="bottomright"><i class="fa fa-trash text-danger"></i></div>
-				</div>
+					<div style="cursor:pointer;" class="bottomright" onclick="delpic('.$row['id'].');"><i class="fa fa-trash text-danger"></i></div>
+				</div>';
+				}
+				?>
+				
 				
 			</div>
-			<form action="add_photo.php" method="post" enctype="multipart/form-data"></form>
+			<form action="add_photo.php" method="post" enctype="multipart/form-data">
 			<label class="form-label" for="file-upload">Upload a new photo<i class="fa fa-image"></i></label>
 			
 		   <div class="image-preview-container">
@@ -123,6 +142,7 @@
 				   <img id="preview-selected-image"  height="200" width="200"/>
 			   </div>
 		   </div>
+		   <input type="text" placeholder="Enter your title" class="form-group" name="title" required>
 		   <button type="submit" class="btn btn-info btn-block mb-4">Add this photo <i class="fa fa-plus"></i></button>
 		</form>
 		</div>
@@ -132,25 +152,11 @@
 	<!-- Footer Section -->
 	<footer class="footer__section">
 		<div class="container">
-			<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 			<div class="footer__copyright__text">
 				<p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> </p>
 			</div>
-			<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 		</div>
 	</footer>
-	<!-- Footer Section end -->
-
-	<!-- Search Begin -->
-	<div class="search-model">
-		<div class="h-100 d-flex align-items-center justify-content-center">
-			<div class="search-close-switch">+</div>
-			<form class="search-model-form">
-				<input type="text" id="search-input" placeholder="Search here.....">
-			</form>
-		</div>
-	</div>
-	<!-- Search End -->
 
 	<!--====== Javascripts & Jquery ======-->
 	<script src="js/vendor/jquery-3.2.1.min.js"></script>
@@ -175,7 +181,7 @@ Swal.fire({
   title: '<strong>Share your gallery by copy this url</strong>',
   icon: 'info',
   html:
-    '<input type="text" value="Hello World" disabled id="myInput"> ' +
+    '<input type="text" value="'+window.location.hostname+'/Gallery/galleryView.php?id=<?php echo $id; ?>" disabled id="myInput"> ' +
     '<button onclick="myFunction()"> <i class="fa fa-copy"></i></button>',
   showCloseButton: true,
   focusConfirm: false
@@ -194,6 +200,17 @@ function myFunction() {
 
   // Alert the copied text
   alert("Copied the text: " + copyText.value);
+}
+function delpic(id){
+	var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+			location.reload();
+		}
+	};
+	xhttp.open("POST", "delpic.php", true);
+    xhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    xhttp.send("id="+id);
 }
     </script>
 	</body>

@@ -1,7 +1,15 @@
+<?php
+require("conn.php");
+session_start();
+if(!isset($_SESSION['id'])){
+	header("location:login.php");
+	die();
+}
+?>
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
-	<title>Boto | Photography HTML Template</title>
+<title>Memories</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="Boto Photo Studio HTML Template">
 	<meta name="keywords" content="photo, html">
@@ -10,7 +18,6 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/font-awesome.min.css"/>
 	<link rel="stylesheet" href="css/slicknav.min.css"/>
-
 	<!-- Main Stylesheets -->
 	<link rel="stylesheet" href="css/style.css"/>
 
@@ -36,8 +43,8 @@
 					</div>
 				</div>
 				<div class="col-sm-4 col-md-6 order-1  order-md-2 text-center">
-					<a href="./index.html" class="site-logo">
-						<img src="img/logo.png" alt="">
+					<a href="./index.php" class="site-logo">
+					<h2>Photo memories</h2>
 					</a>
 				</div>
 				<div class="col-sm-4 col-md-3 order-3 order-sm-3">
@@ -48,45 +55,52 @@
 			</div>
 			<nav class="main__menu">
 				<ul class="nav__menu">
-					<li><a href="./index.html">Home</a></li>
-					<li><a href="./about.html" class="menu--active">About</a></li>
-					<li><a href="./gallery.html">Gallery</a></li>
-					<li><a href="./contact.html">Contact</a></li>
+					<li><a href="./index.php">Home</a></li>
+					<li><a href="./about.php">About</a></li>
+					<li><a href="./gallery.php">Gallery</a></li>
+					<li><a href="./contact.php" class="menu--active">Feedback</a></li>
 				</ul>
 			</nav>
 		</div>
 	</header>
 	<!-- Header Section end -->
 
-	<!-- About Page -->
-	<section class="about__page">
-		<div class="container-fluid">
+	<!-- Contact Page -->
+	<section class="contact__page">
+		<div class="contact__warp">
 			<div class="row">
-				<div class="col-lg-4">
-					<div class="about__text">
-						<h3 class="about__title">About Me</h3>
-						<div class="about__meta">
-							<img src="img/profile.jpg" alt="">
-							<div class="about__meta__info">
-								<h5>Caleb Rodriguez</h5>
-								<p>PHOTOGRAPHER / DESIGNER</p>
-							</div>
-						</div>
-						
+				<div class="col-md-6">
+					<h2>Contact Me</h2>
+					<div class="contact__social">
+						<a href="https://www.facebook.com/profile.php?id=100039254376887"><i class="fa fa-facebook"></i></a>
+						<a href="https://github.com/Anirban-dash"><i class="fa fa-github"></i></a>
+						<a href="https://www.linkedin.com/in/anirban-dash"><i class="fa fa-linkedin"></i></a>
+						<a href="https://www.instagram.com/anirban_dash/"><i class="fa fa-instagram"></i></a>
 					</div>
 				</div>
-			
+				<div class="col-md-6">
+					<div class="contact__text">
+						<p>Phone: +91-6297906377</p>
+						<p>Email: dashanirban275@gmail.com</p>
+					</div>
+				</div>
 			</div>
+			<form class="contact__form">
+				<input type="text" placeholder="Name">
+				<input type="text" placeholder="Phone">
+				<textarea placeholder="Feedback"></textarea>
+				<button class="site-btn">Give us valuable feedback</button>
+			</form>
 		</div>
 	</section>
-	<!-- About Page end -->
+	<!-- Contact Page end -->
 
 	<!-- Footer Section -->
 	<footer class="footer__section">
 		<div class="container">
 			<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 			<div class="footer__copyright__text">
-				<p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+				<p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved </p>
 			</div>
 			<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 		</div>

@@ -1,9 +1,9 @@
 <?php
 require("conn.php");
-$name = mysqli_real_escape_string($con, $_POST['name']);
-$email = mysqli_real_escape_string($con, $_POST['email']);
-$pass = mysqli_real_escape_string($con, $_POST['pass']);
-$target_dir = "./img/profile/";
+session_start();
+$title = mysqli_real_escape_string($con, $_POST['title']);
+$id=$_SESSION['id'];
+$target_dir = "./img/";
 $target_file = $target_dir . basename($_FILES["image"]["name"]);
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 $uploadOk = 1;
@@ -25,8 +25,8 @@ if ($_FILES["image"]["size"] > 5000000) {
   } else {
     if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
       $img=$_FILES["image"]["name"];
-        $res=mysqli_query($con,"INSERT INTO `user` (`name`, `email`, `password`, `photo`) VALUES ('$name','$email', '$pass','$img')") or die(mysqli_error($con));
-        header("location:login.php");
+        $res=mysqli_query($con,"INSERT INTO `image` (`file`, `title`, `user`) VALUES ('$img','$title', '$id')") or die(mysqli_error($con));
+        header("location:gallery.php");
     } else {
       echo "Sorry, there was an error uploading your file.";
       die();

@@ -1,7 +1,19 @@
+<?php
+require("conn.php");
+session_start();
+if(!isset($_SESSION['id'])){
+	header("location:login.php");
+	die();
+}
+$id=$_SESSION['id'];
+$res=mysqli_query($con,"SELECT * from user where id='$id'") or die(mysqli_error($con));
+$row=mysqli_fetch_array($res);
+$cc=mysqli_query($con,"SELECT * from image where user='$id'") or die(mysqli_error($con));
+?>
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
-	<title>Boto | Photography HTML Template</title>
+	<title>Memories</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="Boto Photo Studio HTML Template">
 	<meta name="keywords" content="photo, html">
@@ -10,6 +22,7 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/font-awesome.min.css"/>
 	<link rel="stylesheet" href="css/slicknav.min.css"/>
+
 	<!-- Main Stylesheets -->
 	<link rel="stylesheet" href="css/style.css"/>
 
@@ -36,7 +49,7 @@
 				</div>
 				<div class="col-sm-4 col-md-6 order-1  order-md-2 text-center">
 					<a href="./index.html" class="site-logo">
-						<img src="img/logo.png" alt="">
+					<h2>Photo memories</h2>
 					</a>
 				</div>
 				<div class="col-sm-4 col-md-3 order-3 order-sm-3">
@@ -47,54 +60,45 @@
 			</div>
 			<nav class="main__menu">
 				<ul class="nav__menu">
-					<li><a href="./index.html">Home</a></li>
-					<li><a href="./about.html">About</a></li>
-					<li><a href="./gallery.html">Gallery</a></li>
-					<li><a href="./contact.html" class="menu--active">Feedback</a></li>
+					<li><a href="./index.php">Home</a></li>
+					<li><a href="./about.php" class="menu--active">About</a></li>
+					<li><a href="./gallery.php">Gallery</a></li>
+					<li><a href="./contact.php">Feedback</a></li>
 				</ul>
 			</nav>
 		</div>
 	</header>
 	<!-- Header Section end -->
 
-	<!-- Contact Page -->
-	<section class="contact__page">
-		<div class="contact__warp">
+	<!-- About Page -->
+	<section class="about__page">
+		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-6">
-					<h2>Contact Me</h2>
-					<div class="contact__social">
-						<a href="#"><i class="fa fa-facebook"></i></a>
-						<a href="#"><i class="fa fa-twitter"></i></a>
-						<a href="#"><i class="fa fa-linkedin"></i></a>
-						<a href="#"><i class="fa fa-instagram"></i></a>
+				<div class="col-lg-4">
+					<div class="about__text">
+						<h3 class="about__title">About Me</h3>
+						<div class="about__meta">
+							<img src="img/profile/<?php echo $row['photo']; ?>" alt="">
+							<div class="about__meta__info">
+								<h5><?php echo $row['name']; ?></h5>
+								<p>PHOTOGRAPHER / DESIGNER</p>
+								<p><?php echo $row['email']; ?></p>
+								<p>Total Images: <?php echo mysqli_num_rows($cc); ?>
+							</div>
+						</div>
+						
 					</div>
 				</div>
-				<div class="col-md-6">
-					<div class="contact__text">
-						<p>Phone: 001-1234-666666</p>
-						<p>Email: hi.colorlib@gmail.com</p>
-					</div>
-				</div>
+			
 			</div>
-			<form class="contact__form">
-				<input type="text" placeholder="Name">
-				<input type="text" placeholder="Phone">
-				<textarea placeholder="Feedback"></textarea>
-				<button class="site-btn">Give us valuable feedback</button>
-			</form>
 		</div>
 	</section>
-	<!-- Contact Page end -->
-
-	<!-- Footer Section -->
 	<footer class="footer__section">
 		<div class="container">
-			<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 			<div class="footer__copyright__text">
-				<p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+				<p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved </p>
 			</div>
-			<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+		
 		</div>
 	</footer>
 	<!-- Footer Section end -->

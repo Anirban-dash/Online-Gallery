@@ -1,7 +1,19 @@
+<?php
+require("conn.php");
+session_start();
+if(!isset($_SESSION['id'])){
+	header("location:login.php");
+	die();
+}
+$id=$_SESSION['id'];
+$res=mysqli_query($con,"SELECT * from image where user='$id'") or die(mysqli_error($con));
+
+?>
+
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
-	<title>Boto | Photography HTML Template</title>
+	<title>Memories</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="Boto Photo Studio HTML Template">
 	<meta name="keywords" content="photo, html">
@@ -39,7 +51,7 @@
 				</div>
 				<div class="col-sm-4 col-md-6 order-1  order-md-2 text-center">
 					<a href="./index.html" class="site-logo">
-						<img src="img/logo.png" alt="">
+					<h2>Photo memories</h2>
 					</a>
 				</div>
 				<div class="col-sm-4 col-md-3 order-3 order-sm-3">
@@ -50,10 +62,10 @@
 			</div>
 			<nav class="main__menu">
 				<ul class="nav__menu">
-					<li><a href="./index.html" class="menu--active">Home</a></li>
-					<li><a href="./about.html">About</a></li>
-					<li><a href="./gallery.html">Gallery</a></li>
-					<li><a href="./contact.html">Contact</a></li>
+					<li><a href="./index.php" class="menu--active">Home</a></li>
+					<li><a href="./about.php">About</a></li>
+					<li><a href="./gallery.php">Gallery</a></li>
+					<li><a href="./contact.php">Feedback</a></li>
 				</ul>
 			</nav>
 		</div>
@@ -62,72 +74,33 @@
 
 	<!-- Hero Section -->
 	<section class="hero__section">
-		<div class="hero-slider">
-			<div class="slide-item">
-				<a class="fresco" href="img/hero-slider/1.jpg" data-fresco-group="projects">
-					<img src="img/hero-slider/1.jpg" alt="">
-				</a>
-			</div>
-			<div class="slide-item">
-				<a class="fresco" href="img/hero-slider/2.jpg" data-fresco-group="projects">
-					<img src="img/hero-slider/2.jpg" alt="">
+		<?php
+		if(mysqli_num_rows($res)==0){
+			echo '<p class="text-center">You does not have any photo in your Gallery</p>';
+		}
+			while($row=mysqli_fetch_array($res)){
+				echo '<div class="hero-slider">
+				<div class="slide-item">
+					<a class="fresco" href="img/'.$row['file'].'" data-fresco-group="projects">
+						<img src="img/'.$row['file'].'" alt="">
 					</a>
-			</div>
-			<div class="slide-item">
-				<a class="fresco" href="img/hero-slider/3.jpg" data-fresco-group="projects">
-					<img src="img/hero-slider/3.jpg" alt="">
-				</a>	
-			</div>
-			<div class="slide-item">
-				<a class="fresco" href="img/hero-slider/4.jpg" data-fresco-group="projects">
-					<img src="img/hero-slider/4.jpg" alt="">
-				</a>	
-			</div>
-			<div class="slide-item">
-				<a class="fresco" href="img/hero-slider/5.jpg" data-fresco-group="projects">
-					<img src="img/hero-slider/5.jpg" alt="">
-				</a>	
-			</div>
-			<div class="slide-item">
-				<a class="fresco" href="img/hero-slider/6.jpg" data-fresco-group="projects">
-					<img src="img/hero-slider/6.jpg" alt="">
-				</a>	
-			</div>
-			<div class="slide-item">
-				<a class="fresco" href="img/hero-slider/7.jpg" data-fresco-group="projects">
-					<img src="img/hero-slider/7.jpg" alt="">
-				</a>	
-			</div>
-		</div>
+				</div>
+				
+			</div>';
+			}
+		?>
 		<div class="hero-text-slider">
-			<div class="text-item">
-				<h2>Nature</h2>
+			<?php
+			$res=mysqli_query($con,"SELECT * from image where user='$id'") or die(mysqli_error($con));
+			while($row=mysqli_fetch_array($res)){
+				echo '<div class="text-item">
+				<h2>'.$row['title'].'</h2>
 				<p>Photography</p>
-			</div>
-			<div class="text-item">
-				<h2>Red Heartbeat</h2>
-				<p>Photography</p>
-			</div>
-			<div class="text-item">
-				<h2>Blue Dreem</h2>
-				<p>Photography</p>
-			</div>
-			<div class="text-item">
-				<h2>Christian Church</h2>
-				<p>Photography</p>
-			</div>
-			<div class="text-item">
-				<h2>Red Darkness</h2>
-				<p>Photography</p>
-			</div>
-			<div class="text-item">
-				<h2>Beauty with Brain</h2>
-				<p>Photography</p>
-			</div>
-			<div class="text-item">
-				<h2>Remarkable</h2>
-				<p>Photography</p>
-			</div>
+			</div>';
+			}
+?>
+			
+			
 		</div>
 	</section>
 	<!-- Hero Section end -->
@@ -137,7 +110,7 @@
 		<div class="container">
 			<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 			<div class="footer__copyright__text">
-				<p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+				<p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved </p>
 			</div>
 			<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 		</div>
